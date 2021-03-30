@@ -1,5 +1,7 @@
 package chip8;
 
+import java.util.Arrays;
+
 /**
  * @author Miguel Moreno
  * This class implements the screen
@@ -7,44 +9,55 @@ package chip8;
 public class Screen {
 
     //Dimensions of the screen
-    public final short SCREEN_HEIGHT = 32;
-    public final short SCREEN_WIDTH = 64;
+    public static final short SCREEN_HEIGHT = 32;
+    public static final short SCREEN_WIDTH = 64;
 
     //True if sprites should wrap around
-    public final boolean SCREEN_WRAP = true;
+    public final boolean SCREEN_WRAP;
 
     //false is black and true is white
     //An empty screen is black, sprites are drawn in white
-    private boolean[][] screen;
+    private boolean[][] screenArray;
 
     //True if the screen has been modified since last time it was shown
     public boolean drawFlag;
 
     /**
-     * Creates a screen
+     * Creates a blank screen
      */
     Screen() {
-        screen = new boolean[SCREEN_WIDTH][SCREEN_HEIGHT];
-        clear();
+        SCREEN_WRAP = true;
+        screenArray = new boolean[SCREEN_WIDTH][SCREEN_HEIGHT];
+        drawFlag = true;
+    }
+
+    Screen(Screen s) {
+        SCREEN_WRAP = s.SCREEN_WRAP;
+        screenArray = new boolean[SCREEN_WIDTH][SCREEN_HEIGHT];
+        boolean[][] screen2 = s.getScreenArray();
+        for (int i = 0; i< screenArray.length; i++) {
+            screenArray[i] = Arrays.copyOf(screen2[i], screen2[i].length);
+        }
+        drawFlag = s.drawFlag;
     }
 
     /**
      * Clears the screen by settings all pixels to false
      */
     public void clear() {
-        for (short i=0; i<screen.length; i++) {
-            for (short j=0; j<screen[i].length; j++) {
-                screen[i][j] = false;
+        for (short i = 0; i< screenArray.length; i++) {
+            for (short j = 0; j< screenArray[i].length; j++) {
+                screenArray[i][j] = false;
             }
         }
         drawFlag = true;
     }
 
     /**
-     * get the screen
+     * get the screen boolean array
      */
-    public boolean[][] getScreen() {
-        return screen;
+    public boolean[][] getScreenArray() {
+        return screenArray;
     }
 
     /**
@@ -73,9 +86,9 @@ public class Screen {
                     //Calculate the pixel
                     boolean pixel = (line & mask) == mask;
                     //Check if an on pixel will be overwritten to off
-                    if (pixel==true && screen[(x+i)% SCREEN_WIDTH][y% SCREEN_HEIGHT]==true) pixelOverwrite=true;
+                    if (pixel==true && screenArray[(x+i)% SCREEN_WIDTH][y% SCREEN_HEIGHT]==true) pixelOverwrite=true;
                     //XOR the pixel
-                    screen[(x+i)% SCREEN_WIDTH][y% SCREEN_HEIGHT] ^= pixel;
+                    screenArray[(x+i)% SCREEN_WIDTH][y% SCREEN_HEIGHT] ^= pixel;
                 }
                 mask <<= 1;
             }
@@ -97,7 +110,7 @@ public class Screen {
         char c = 'X'; //Character used to represent a white pixel
         for (int i = 0; i< SCREEN_HEIGHT; i++) {
             for (int j = 0; j< SCREEN_WIDTH; j++) {
-                if (screen[j][i]) s += c;
+                if (screenArray[j][i]) s += c;
                 else s += " ";
             }
             s += "\n";
