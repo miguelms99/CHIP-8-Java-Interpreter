@@ -60,3 +60,6 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
+
+# Java bug https://bugs.openjdk.java.net/browse/JDK-8214300
+.attach_pid*
