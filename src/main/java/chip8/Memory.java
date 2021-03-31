@@ -53,7 +53,7 @@ public class Memory {
             {(byte)0xF0,(byte)0x80,(byte)0xF0,(byte)0x80,(byte)0x80},
     };
 
-    /*
+    /**
      * Get the byte at a memory address
      */
     public byte getByte(short address) {
@@ -64,12 +64,17 @@ public class Memory {
         return memory[address];
     }
 
-    /*
+    /**
      * Set the byte at a memory address
      */
     public void setByte(byte data, short address) {
         if (address > MEMORY_SIZE) System.err.println("Address out of range");
         else memory[address] = data;
+    }
+
+    public void setByte(byte[] data, short address) {
+        if ((address - 1 + data.length) > MEMORY_SIZE) System.err.println("Address out of range");
+        else for (byte b : data) memory[address++] = b;
     }
 
 }
