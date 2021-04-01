@@ -10,12 +10,10 @@ import java.awt.*;
 public class ScreenPanel extends JPanel {
 
     //How many pixels a CHIP-8 screen pixel has
-    private int scale = 10;
-    private int width = Screen.SCREEN_WIDTH * scale;
-    private int height = Screen.SCREEN_HEIGHT * scale;
+    private final int scale = 10;
 
     //Screen
-    private Screen screen;
+    private final Screen screen;
     //Screen array
     private boolean[][] screenArray;
 
@@ -27,7 +25,7 @@ public class ScreenPanel extends JPanel {
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(width,height);
+        return new Dimension(Screen.SCREEN_WIDTH * scale, Screen.SCREEN_HEIGHT * scale);
     }
 
     @Override

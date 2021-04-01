@@ -17,32 +17,42 @@ public class Screen {
     public static final short SCREEN_WIDTH = 64;
 
     //True if sprites should wrap around
-    public final boolean SCREEN_WRAP;
+    public final boolean screenWrap;
+
+    //True if coordinates out of bounds are allowed to be used to draw sprites
+    private final boolean outOfBoundsCoordinates;
 
     //false is black and true is white
     //An empty screen is black, sprites are drawn in white
-    private boolean[][] screenArray;
+    private final boolean[][] screenArray = new boolean[SCREEN_WIDTH][SCREEN_HEIGHT];
 
     //True if the screen has been modified since last time it was shown
-    private boolean drawFlag;
-
-    //True if coordinates out of bounds are allowed to be used to draw sprites
-    private boolean outOfBoundsCoordinates;
+    private volatile boolean drawFlag = true;
 
     /**
-     * Creates a blank screen
+     * Creates a blank screen. Sprites wrap around the screen and out of bounds coordinates are not allowed.
      */
-    Screen() {
-        SCREEN_WRAP = true;
-        screenArray = new boolean[SCREEN_WIDTH][SCREEN_HEIGHT];
-        drawFlag = true;
-        outOfBoundsCoordinates = true;
+    public Screen() {
+        this(true,false);
     }
 
-    Screen(Screen s) {
-        SCREEN_WRAP = s.SCREEN_WRAP;
+    /**
+     * Creates a new Screen
+     * @param screenWrap Whether sprites wrap around the screen or not.
+     * @param outOfBoundsCoordinates Whether out of bounds coordinates are allowed or not.
+     *                               If allowed they will wrap around.
+     */
+    public Screen(boolean screenWrap, boolean outOfBoundsCoordinates) {
+        this.screenWrap = screenWrap;
+        this.outOfBoundsCoordinates = outOfBoundsCoordinates;
+    }
+
+    /**
+     * Copy constructor
+     */
+    public Screen(Screen s) {
+        screenWrap = s.screenWrap;
         outOfBoundsCoordinates = s.outOfBoundsCoordinates;
-        screenArray = new boolean[SCREEN_WIDTH][SCREEN_HEIGHT];
         for (int i = 0; i< screenArray.length; i++) {
             screenArray[i] = Arrays.copyOf(s.screenArray[i], s.screenArray[i].length);
         }
@@ -123,18 +133,18 @@ public class Screen {
                 byte mask = 1;
                 for (byte i = 7; i>=0; i--) {
                     //Avoid wrapping if wrap is set to false
-                    if (!(x+i>= SCREEN_WIDTH && !SCREEN_WRAP)) {
+                    if (!(x+i>= SCREEN_WIDTH && !screenWrap)) {
                         //Calculate the pixel
                         boolean pixel = (line & mask) == mask;
                         //Check if an on pixel will be overwritten to off
-                        if (pixel==true && screenArray[(x+i)% SCREEN_WIDTH][y% SCREEN_HEIGHT]==true) pixelOverwrite=true;
+                        if (pixel && screenArray[(x + i) % SCREEN_WIDTH][y % SCREEN_HEIGHT]) pixelOverwrite=true;
                         //XOR the pixel
                         screenArray[(x+i)%SCREEN_WIDTH][y%SCREEN_HEIGHT] ^= pixel;
                     }
                     mask <<= 1;
                 }
                 y++;
-                if (y>= SCREEN_HEIGHT && !SCREEN_WRAP) break;
+                if (y>= SCREEN_HEIGHT && !screenWrap) break;
             }
 
             drawFlag = true;
@@ -147,20 +157,20 @@ public class Screen {
     }
 
     @Override
-    /**
-     * A String representation of the screen
+    /*
+      A String representation of the screen
      */
     public String toString() {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         char c = 'X'; //Character used to represent a white pixel
         for (int i = 0; i< SCREEN_HEIGHT; i++) {
             for (int j = 0; j< SCREEN_WIDTH; j++) {
-                if (screenArray[j][i]) s += c;
-                else s += " ";
+                if (screenArray[j][i]) s.append(c);
+                else s.append(" ");
             }
-            s += "\n";
+            s.append("\n");
         }
-        return s;
+        return s.toString();
     }
 
     public boolean getDrawFlag() {

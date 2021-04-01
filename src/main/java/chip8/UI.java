@@ -1,7 +1,6 @@
 package chip8;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
@@ -11,12 +10,11 @@ import java.awt.event.ActionListener;
 public class UI {
 
     //Refresh rate of the screen in hz
-    private int refreshRate = 60;
-    private ScreenPanel display;
-    private JFrame frame;
+    private final int refreshRate = 60;
+    private final ScreenPanel display;
 
     public UI(Screen s) {
-        frame = new JFrame("CHIP-8 Interpreter");
+        JFrame frame = new JFrame("CHIP-8 Interpreter");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         //frame.getContentPane().setBackground(Color.BLACK);
@@ -33,11 +31,7 @@ public class UI {
      */
     private void refreshScreen() {
         int delay = 1000/refreshRate;
-        ActionListener task = new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                display.paintScreen();
-            }
-        };
+        ActionListener task = actionEvent -> display.paintScreen();
         new Timer(delay, task).start();
     }
 

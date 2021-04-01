@@ -7,25 +7,25 @@ package chip8;
 public class Memory {
 
     //Size of the memory
-    public final short MEMORY_SIZE = 4096;
+    public final short memorySize = 4096;
 
     //Location of the program
-    public final short PROGRAM_LOCATION = 0x200;
+    public final short programLocation = 0x200;
 
     //Location of the pixel font
-    public final short FONT_LOCATION = 0x50;
+    public final short fontLocation = 0x50;
 
     //Memory and register bank
-    private byte[] memory;
+    private final byte[] memory;
 
     /**
      * Creates a Memory and loads the font sprites into it
      */
-    Memory() {
-        memory = new byte[MEMORY_SIZE];
+    public Memory() {
+        memory = new byte[memorySize];
 
         //Copy font sprites to memory
-        short i = FONT_LOCATION;
+        short i = fontLocation;
         for (byte[] j : FONT) {
             for (byte k : j) {
                 memory[i++] = k;
@@ -57,7 +57,7 @@ public class Memory {
      * Get the byte at a memory address
      */
     public byte getByte(short address) {
-        if (address > MEMORY_SIZE) {
+        if (address > memorySize) {
             System.err.println("Address out of range");
             return 0;
         }
@@ -68,12 +68,12 @@ public class Memory {
      * Set the byte at a memory address
      */
     public void setByte(byte data, short address) {
-        if (address > MEMORY_SIZE) System.err.println("Address out of range");
+        if (address > memorySize) System.err.println("Address out of range");
         else memory[address] = data;
     }
 
     public void setByte(byte[] data, short address) {
-        if ((address - 1 + data.length) > MEMORY_SIZE) System.err.println("Address out of range");
+        if ((address - 1 + data.length) > memorySize) System.err.println("Address out of range");
         else for (byte b : data) memory[address++] = b;
     }
 
