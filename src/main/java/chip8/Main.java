@@ -2,7 +2,7 @@ package chip8;
 
 import javax.swing.*;
 
-public class Chip8 {
+public class Main {
 
     private static Screen screen;
     private static UI ui;

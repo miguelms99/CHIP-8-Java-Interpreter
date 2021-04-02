@@ -27,11 +27,11 @@ public class UI {
     z x c v
     keyCodes contains the key codes for those keys sorted by the hexadecimal identifier
      */
-    private int[] keyCodes = {88, 49, 50, 51,
+    private final int[] keyCodes = {88, 49, 50, 51,
             81, 87, 69, 65,
             83, 68, 90, 67,
             52, 82, 70, 86};
-    private Keyboard keyboard;
+    private final Keyboard keyboard;
     private final int inputFocus = JComponent.WHEN_IN_FOCUSED_WINDOW;
 
     public UI(Screen s, Keyboard keyboard) {
