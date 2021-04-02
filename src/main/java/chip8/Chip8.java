@@ -8,13 +8,18 @@ import javax.swing.*;
  */
 public class Chip8 {
 
+    private static Screen screen;
+    private static UI ui;
+    private static Timers timers;
+
     public static void main(String[] args) {
 
-        Screen screen = new Screen();
+        SwingUtilities.invokeLater(() -> {
+            screen = new Screen();
+            ui = new UI(screen);
+        });
 
-        SwingUtilities.invokeLater(() -> new UI(screen));
-
-        Timers timers = new Timers();
+        timers = new Timers();
 
         //Some code to test the sound
         int i=0;
@@ -43,4 +48,6 @@ public class Chip8 {
         }
 
     }
+
+
 }
