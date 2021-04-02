@@ -2,24 +2,23 @@ package chip8;
 
 import javax.swing.*;
 
-/**
- * @author Miguel Moreno
- * Class in which the main game loop occurs
- */
 public class Chip8 {
 
     private static Screen screen;
     private static UI ui;
     private static Timers timers;
+    private static Keyboard keyboard;
 
     public static void main(String[] args) {
 
+        timers = new Timers();
+        keyboard = new Keyboard();
+
+
         SwingUtilities.invokeLater(() -> {
             screen = new Screen();
-            ui = new UI(screen);
+            ui = new UI(screen, keyboard);
         });
-
-        timers = new Timers();
 
         //Some code to test the sound
         int i=0;
