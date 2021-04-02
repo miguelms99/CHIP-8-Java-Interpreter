@@ -107,7 +107,7 @@ public class Screen {
      * @param sprite an array of bytes representing the sprite
      * @param x the column in which to draw the sprite
      * @param y the row in which to draw the sprite
-     * @return whether an on pixel has been overwritten to off or not
+     * @return true if an on pixel has been overwritten to off
      */
     public boolean drawSprite(byte[] sprite, short x, short y) {
 
