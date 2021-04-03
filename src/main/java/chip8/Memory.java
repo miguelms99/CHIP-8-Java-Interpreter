@@ -1,5 +1,7 @@
 package chip8;
 
+import java.util.Arrays;
+
 /**
  * @author Miguel Moreno
  * This class implements the memory
@@ -62,6 +64,14 @@ public class Memory {
             return 0;
         }
         return memory[address];
+    }
+
+    public byte[] getByte(short address, short numBytes) {
+        if (address - 1 + numBytes > memorySize) {
+            System.err.println("Address out of range");
+            return new byte[] {};
+        }
+        return Arrays.copyOfRange(memory, address, address + numBytes);
     }
 
     /**

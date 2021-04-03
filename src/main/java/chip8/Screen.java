@@ -30,10 +30,10 @@ public class Screen {
     private volatile boolean drawFlag = true;
 
     /**
-     * Creates a blank screen. Sprites wrap around the screen and out of bounds coordinates are not allowed.
+     * Creates a blank screen. Sprites wrap around the screen and out of bounds coordinates are allowed.
      */
     public Screen() {
-        this(true,false);
+        this(true,true);
     }
 
     /**
@@ -116,8 +116,8 @@ public class Screen {
 
             //Check if coordinates are out of bounds
             if (x<0 || x>= SCREEN_WIDTH || y<0 || y>= SCREEN_HEIGHT) {
-                System.err.println("Sprite coordinates out of bounds");
                 if (!outOfBoundsCoordinates) {
+                    System.err.println("Sprite coordinates out of bounds");
                     return false;
                 }
                 else {
