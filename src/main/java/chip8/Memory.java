@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 /**
  * @author Miguel Moreno
- * This class implements the memory
+ * This class implements the memory and the registers
  */
 public class Memory {
 
@@ -19,6 +19,12 @@ public class Memory {
 
     //Memory and register bank
     private final byte[] memory;
+
+    //16 general purpose 8-bit registers (V0 to VF)
+    public final byte[] V = new byte[16];
+
+    //16-bit address register I
+    public short I;
 
     /**
      * Creates a Memory and loads the font sprites into it
