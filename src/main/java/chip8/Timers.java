@@ -44,20 +44,16 @@ public class Timers {
      * Setter for the delay timer
      */
     public void setDelayTimer(byte delayTimer) {
-        //Convert the unsigned delayTimer to a signed short
-        short signedTimer = delayTimer < 0 ? (short) (delayTimer + 256) : delayTimer;
         //Calculate the time it reaches 0
-        delayTimerStopTime = System.nanoTime() + (signedTimer*1_000_000_000L/60);
+        delayTimerStopTime = System.nanoTime() + ((delayTimer&0xFF)*1_000_000_000L/60);
     }
 
     /**
      * Setter for the sound timer
      */
     public synchronized void setSoundTimer(byte soundTimer) {
-        //Convert the unsigned soundTimer to a signed short
-        short signedTimer = soundTimer < 0 ? (short) (soundTimer + 256) : soundTimer;
         //Calculate the time the sound should stop
-        soundTimerStopTime = System.nanoTime() + (signedTimer*1_000_000_000L/60);
+        soundTimerStopTime = System.nanoTime() + ((soundTimer&0xFF)*1_000_000_000L/60);
         //Notify the thread waiting to play a sound
         this.notify();
     }
