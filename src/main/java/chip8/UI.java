@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 /**
  * @author Miguel Moreno
- * This class implements the User Interface
+ * User interface for the CHIP-8 interpreter
  */
 public class UI {
 
@@ -34,12 +34,18 @@ public class UI {
     private final Keyboard keyboard;
     private final int inputFocus = JComponent.WHEN_IN_FOCUSED_WINDOW;
 
-    public UI(Screen s, Keyboard keyboard) {
+    /**
+     * Display the user interface.
+     * The interface will show the screen of the CHIP-8 and it will register keyboard input.
+     * @param screen CHIP-8 screen to display
+     * @param keyboard keyboard used to register key presses needed for input in CHIP-8
+     */
+    public UI(Screen screen, Keyboard keyboard) {
         this.keyboard = keyboard;
         frame = new JFrame("CHIP-8 Interpreter");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        display = new ScreenPanel(s);
+        display = new ScreenPanel(screen);
         display.setDoubleBuffered(true);
         frame.add(display);
         frame.pack();
@@ -48,9 +54,7 @@ public class UI {
         refreshScreen();
     }
 
-    /**
-     * This method will set all the key bindings
-     */
+    //This method will set all the keybindings
     private void setKeyBindings() {
         for (int i = 0; i<keyCodes.length; i++) {
             //Sets the input map for the key press
@@ -64,9 +68,7 @@ public class UI {
         }
     }
 
-    /**
-     * This method sets up a timer which will refresh the screen
-     */
+    //This method sets up a timer which will refresh the screen
     private void refreshScreen() {
         int delay = 1000/refreshRate;
         ActionListener task = actionEvent -> display.paintScreen();
@@ -74,7 +76,6 @@ public class UI {
     }
 
     private class setKeyPress extends AbstractAction {
-
         boolean keyStatus; //true if the key is being pressed, false if the key is being released
         int key; //hexadecimal identifier of the key
 
@@ -88,7 +89,5 @@ public class UI {
             keyboard.setKey(key, keyStatus);
         }
     }
-
-
 
 }

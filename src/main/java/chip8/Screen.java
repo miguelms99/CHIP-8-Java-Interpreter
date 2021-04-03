@@ -5,28 +5,38 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author Miguel Moreno
- * This class implements the screen
+ * Information about the screen to be displayed
  */
 public class Screen {
 
     //A lock is needed to avoid printing the screen while a sprite is being drawn onto it
-    ReentrantLock lock = new ReentrantLock(true);
+    private ReentrantLock lock = new ReentrantLock(true);
 
-    //Dimensions of the screen
+    /**
+     * Height of the screen
+     */
     public static final short SCREEN_HEIGHT = 32;
+
+    /**
+     * Width of the screen
+     */
     public static final short SCREEN_WIDTH = 64;
 
-    //True if sprites should wrap around
+    /**
+     * True if the sprites should wrap around
+     */
     public final boolean screenWrap;
 
-    //True if coordinates out of bounds are allowed to be used to draw sprites
-    private final boolean outOfBoundsCoordinates;
+    /**
+     * True if out of bounds coordinates should be allowed, if allowed they wrap around the screen
+     */
+    public final boolean outOfBoundsCoordinates;
 
     //false is black and true is white
     //An empty screen is black, sprites are drawn in white
     private final boolean[][] screenArray = new boolean[SCREEN_WIDTH][SCREEN_HEIGHT];
 
-    //True if the screen has been modified since last time it was shown
+    //true if the screen has been modified since last time it was shown
     private volatile boolean drawFlag = true;
 
     /**
@@ -38,8 +48,8 @@ public class Screen {
 
     /**
      * Creates a new Screen
-     * @param screenWrap Whether sprites wrap around the screen or not.
-     * @param outOfBoundsCoordinates Whether out of bounds coordinates are allowed or not.
+     * @param screenWrap If sprites wrap around the screen or not.
+     * @param outOfBoundsCoordinates If out of bounds coordinates are allowed or not.
      *                               If allowed they will wrap around.
      */
     public Screen(boolean screenWrap, boolean outOfBoundsCoordinates) {
@@ -49,14 +59,15 @@ public class Screen {
 
     /**
      * Copy constructor
+     * @param screen Screen to copy
      */
-    public Screen(Screen s) {
-        screenWrap = s.screenWrap;
-        outOfBoundsCoordinates = s.outOfBoundsCoordinates;
+    public Screen(Screen screen) {
+        screenWrap = screen.screenWrap;
+        outOfBoundsCoordinates = screen.outOfBoundsCoordinates;
         for (int i = 0; i< screenArray.length; i++) {
-            screenArray[i] = Arrays.copyOf(s.screenArray[i], s.screenArray[i].length);
+            screenArray[i] = Arrays.copyOf(screen.screenArray[i], screen.screenArray[i].length);
         }
-        drawFlag = s.drawFlag;
+        drawFlag = screen.drawFlag;
     }
 
     /**
@@ -79,6 +90,7 @@ public class Screen {
     /**
      * Get a copy of the screen boolean array
      * @param setFlagToFalse if true then drawFlag will be set to false
+     * @return A copy of the screen boolean array
      */
     public boolean[][] getScreenArray(boolean setFlagToFalse) {
         lock.lock();
@@ -96,6 +108,7 @@ public class Screen {
 
     /**
      * Get a copy of the screen boolean array
+     * @return A copy of the screen boolean array
      */
     public boolean[][] getScreenArray() {
         return getScreenArray(false);
@@ -156,10 +169,11 @@ public class Screen {
         }
     }
 
-    @Override
-    /*
-      A String representation of the screen
+    /**
+     * Returns a String representation of the screen
+     * @return String which represent pixels of the screen
      */
+    @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
         char c = 'X'; //Character used to represent a white pixel

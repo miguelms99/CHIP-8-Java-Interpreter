@@ -17,14 +17,18 @@ public class ScreenPanel extends JPanel {
     //Screen array
     private boolean[][] screenArray;
 
-
-    public ScreenPanel(Screen s) {
-        screen = s;
+    /**
+     * Creates a screen panel which will display a screen
+     * @param screen Screen to be displayed
+     */
+    public ScreenPanel(Screen screen) {
+        this.screen = screen;
         paintScreen();
     }
 
     @Override
     public Dimension getPreferredSize() {
+        //Sets the size of the panel
         return new Dimension(Screen.SCREEN_WIDTH * scale, Screen.SCREEN_HEIGHT * scale);
     }
 
@@ -52,7 +56,7 @@ public class ScreenPanel extends JPanel {
         if (screen.getDrawFlag()) {
             screenArray = screen.getScreenArray(true);
             repaint();
-            Toolkit.getDefaultToolkit().sync();
+            Toolkit.getDefaultToolkit().sync(); //This is needed so that the panel doesn't lag
         }
     }
 

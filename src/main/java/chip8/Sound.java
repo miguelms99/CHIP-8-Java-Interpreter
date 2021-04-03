@@ -6,7 +6,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 /**
- * This class implements runnable and will play a sound when needed
+ * This class will play a sound when needed
  */
 class Sound implements Runnable {
 
@@ -17,6 +17,10 @@ class Sound implements Runnable {
     private final SourceDataLine sdl;
     private volatile boolean isPlaying; //True when sound should be played
 
+    /**
+     * Creates a sound class which will play a sound when required by a timer
+     * @param timers timer which will indicate when to play a sound
+     */
     Sound(Timers timers) throws LineUnavailableException {
         this.timers = timers;
         AudioFormat af = new AudioFormat((float) sampleRate, 8, 1, true, false);

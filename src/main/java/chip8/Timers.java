@@ -3,7 +3,7 @@ package chip8;
 import javax.sound.sampled.LineUnavailableException;
 
 /**
- * This class will hold the timers information
+ * Timers required by CHIP-8
  */
 public class Timers {
 
@@ -42,6 +42,7 @@ public class Timers {
 
     /**
      * Setter for the delay timer
+     * @param delayTimer Value of the delay timer
      */
     public void setDelayTimer(byte delayTimer) {
         //Calculate the time it reaches 0
@@ -50,6 +51,7 @@ public class Timers {
 
     /**
      * Setter for the sound timer
+     * @param soundTimer Value of the sound timer
      */
     public synchronized void setSoundTimer(byte soundTimer) {
         //Calculate the time the sound should stop
@@ -60,6 +62,7 @@ public class Timers {
 
     /**
      * Getter for the delay timer
+     * @return Value of the delay timer
      */
     public byte getDelayTimer() {
         return (byte) Math.max(Math.round((delayTimerStopTime-System.nanoTime())/((double) 1_000_000_000/60)), 0);
@@ -67,15 +70,26 @@ public class Timers {
 
     /**
      * Getter for the sound timer
+     * @return Value of the sound timer
      */
     public byte getSoundTimer() {
         return (byte) Math.max(Math.round((soundTimerStopTime-System.nanoTime())/((double) 1_000_000_000/60)), 0);
     }
 
+    /**
+     * Gets the time at which the delay timer will reach 0.
+     * Time is in nanoseconds and uses System.nanoTime() as the time source.
+     * @return Time in nanoseconds at which the delay timer will reach 0, uses System.nanoTime() as the time source.
+     */
     public long getDelayTimerStopTime() {
         return delayTimerStopTime;
     }
 
+    /**
+     * Gets the time at which the sound timer will reach 0.
+     * Time is in nanoseconds and uses System.nanoTime() as the time source.
+     * @return Time in nanoseconds at which the sound timer will reach 0, uses System.nanoTime() as the time source.
+     */
     public long getSoundTimerStopTime() {
         return soundTimerStopTime;
     }

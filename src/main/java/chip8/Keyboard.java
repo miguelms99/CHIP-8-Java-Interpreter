@@ -3,7 +3,7 @@ package chip8;
 import java.util.concurrent.atomic.AtomicIntegerArray;
 
 /**
- * Stores the status of some keys
+ * Stores the status of the key presses needed for CHIP-8 to work
  */
 public class Keyboard {
 
