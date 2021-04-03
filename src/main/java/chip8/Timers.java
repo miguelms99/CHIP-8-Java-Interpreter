@@ -21,7 +21,7 @@ public class Timers {
     private volatile long soundTimerStopTime;
 
     //Sound thread
-    private Thread soundThread;
+    public Thread soundThread;
 
 
     /**

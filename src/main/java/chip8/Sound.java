@@ -20,6 +20,7 @@ class Sound implements Runnable {
     /**
      * Creates a sound class which will play a sound when required by a timer
      * @param timers timer which will indicate when to play a sound
+     * @throws LineUnavailableException
      */
     Sound(Timers timers) throws LineUnavailableException {
         this.timers = timers;
@@ -31,7 +32,7 @@ class Sound implements Runnable {
 
     @Override
     public void run() {
-        new Thread(() -> {
+        Thread bufferFillThread = new Thread(() -> {
             /*
             This thread fills up the data line buffer using the write method.
             The write method will block when trying to write more data that can currently be written.
@@ -57,11 +58,12 @@ class Sound implements Runnable {
                 }
                 if (isPlaying) sdl.write(b, 0, b.length);
             }
-        }).start();
+        });
+        bufferFillThread.start();
 
         //Main loop
         while (true) {
-            if (Thread.currentThread().isInterrupted()) break;
+            if (Thread.interrupted()) break;
             try {
                 synchronized (timers) {
                     while (timers.getSoundTimerStopTime() < System.nanoTime()) {
@@ -98,6 +100,10 @@ class Sound implements Runnable {
                 isPlaying = false;
             }
         }
-        sdl.close(); //Close if interrupted
+        bufferFillThread.interrupt();
+        try {
+            bufferFillThread.join();
+        } catch (InterruptedException e) { }
+        sdl.close();
     }
 }

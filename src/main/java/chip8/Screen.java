@@ -122,7 +122,7 @@ public class Screen {
      * @param y the row in which to draw the sprite
      * @return true if an on pixel has been overwritten to off
      */
-    public boolean drawSprite(byte[] sprite, short x, short y) {
+    public boolean drawSprite(byte[] sprite, byte x, byte y) {
 
         lock.lock();
         try {
@@ -136,6 +136,9 @@ public class Screen {
                 else {
                     x %= SCREEN_WIDTH;
                     y %= SCREEN_HEIGHT;
+                    //In case the remainder is negative
+                    if (x < 0) x += SCREEN_WIDTH;
+                    if (y < 0) y += SCREEN_HEIGHT;
                 }
             }
 
