@@ -23,7 +23,7 @@ public class Screen {
     public static final short SCREEN_WIDTH = 64;
 
     /**
-     * True if the sprites should wrap around
+     * True if partially drawn sprites should wrap around
      */
     public final boolean screenWrap;
 
@@ -43,12 +43,12 @@ public class Screen {
      * Creates a blank screen. Sprites wrap around the screen and out of bounds coordinates are allowed.
      */
     public Screen() {
-        this(true,true);
+        this(false,true);
     }
 
     /**
      * Creates a new Screen
-     * @param screenWrap If sprites wrap around the screen or not.
+     * @param screenWrap If partially drawn sprites wrap around the screen or not.
      * @param outOfBoundsCoordinates If out of bounds coordinates are allowed or not.
      *                               If allowed they will wrap around.
      */
@@ -134,11 +134,8 @@ public class Screen {
                     return false;
                 }
                 else {
-                    x %= SCREEN_WIDTH;
-                    y %= SCREEN_HEIGHT;
-                    //In case the remainder is negative
-                    if (x < 0) x += SCREEN_WIDTH;
-                    if (y < 0) y += SCREEN_HEIGHT;
+                    x = (byte) ((x & 0xFF) % SCREEN_WIDTH);
+                    y = (byte) ((y & 0XFF) % SCREEN_HEIGHT);
                 }
             }
 

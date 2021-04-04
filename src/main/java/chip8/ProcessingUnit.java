@@ -19,9 +19,6 @@ public class ProcessingUnit {
     //How many instructions per second should be executed, 0 for unlimited
     private int frequency;
 
-    //Default frequency if not specified in the constructor
-    private final static int defaultFrequency = 600;
-
     //Time at which the CHIP-8 emulation started
     private final long startTime;
 
@@ -66,37 +63,6 @@ public class ProcessingUnit {
         startTime = System.nanoTime();
         this.alternative8XY68XYE = alternative8XY68XYE;
         this.alternativeFX55FX65 = alternativeFX55FX65;
-    }
-
-    /**
-     * Construct a ProcessingUnit object. The ProcessingUnit will execute CHIP-8 instructions and will need the
-     * necessary CHIP-8 components, i.e. memory, timers, screen and keyboard.
-     * @param memory memory to be used
-     * @param timers timers to be used
-     * @param screen screen to be used
-     * @param keyboard keyboard to be used
-     */
-    public ProcessingUnit(Memory memory, Timers timers, Screen screen, Keyboard keyboard) {
-        this(memory, timers, screen, keyboard, defaultFrequency, true, true);
-    }
-
-    /**
-     * Construct a ProcessingUnit object. The ProcessingUnit will execute CHIP-8 instructions and will need the
-     * necessary CHIP-8 components, i.e. memory, timers, screen and keyboard.
-     * Alternative implementation for the 8XY6, 8XYE, FX55 and FX65 instructions can be activated. These alternative
-     * implementations differ from those used in early CHIP-8 interpreters but may offer better compatibility with
-     * popular CHIP-8 programs.
-     * The alternative implementation for the 8XY6 and 8XYE instructions will shift the VX register instead of
-     * the VY register and the latter register will not be used at all.
-     * The alternative implementation for the FX55 and FX65 instructions will not modify the I register.
-     * @param memory memory to be used
-     * @param timers timers to be used
-     * @param screen screen to be used
-     * @param keyboard keyboard to be used
-     * @param alternativeInstructions true if the newer implementation for the 8XY6, 8XYE, FX55 and FX65 instructions should be used
-     */
-    public ProcessingUnit(Memory memory, Timers timers, Screen screen, Keyboard keyboard, boolean alternativeInstructions) {
-        this(memory, timers, screen, keyboard, defaultFrequency, alternativeInstructions, alternativeInstructions);
     }
 
     /**
