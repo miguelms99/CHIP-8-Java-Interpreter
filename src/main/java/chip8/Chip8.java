@@ -55,36 +55,6 @@ public class Chip8 {
     }
 
     /**
-     * Executes a CHIP-8 program.
-     * Alternative implementation for the 8XY6, 8XYE, FX55 and FX65 instructions can be activated. These alternative
-     * implementations differ from those used in early CHIP-8 interpreters but may offer better compatibility with
-     * popular CHIP-8 programs.
-     * The alternative implementation for the 8XY6 and 8XYE instructions will shift the VX register instead of
-     * the VY register and the latter register will not be used at all.
-     * The alternative implementation for the FX55 and FX65 instructions will not modify the I register.
-     * @param file file to be executed by the CHIP-8 interpreter
-     * @param frequency the frequency at which instructions will be executed, in instructions per second
-     */
-    public Chip8(String file, int frequency) {
-        this(file, frequency, defaultAlternative8XY68XYE, defaultAlternativeFX55FX65);
-    }
-
-    /**
-     * Executes a CHIP-8 program.
-     * Alternative implementation for the 8XY6, 8XYE, FX55 and FX65 instructions can be activated. These alternative
-     * implementations differ from those used in early CHIP-8 interpreters but may offer better compatibility with
-     * popular CHIP-8 programs.
-     * The alternative implementation for the 8XY6 and 8XYE instructions will shift the VX register instead of
-     * the VY register and the latter register will not be used at all.
-     * The alternative implementation for the FX55 and FX65 instructions will not modify the I register.
-     * @param file file to be executed by the CHIP-8 interpreter
-     * @param alternativeInstructions true if the newer implementation for the 8XY6, 8XYE, FX55 and FX65 instructions should be used
-     */
-    public Chip8(String file, boolean alternativeInstructions) {
-        this(file, defaultFrequency, alternativeInstructions, alternativeInstructions);
-    }
-
-    /**
      * Executes a CHIP-8 program
      * @param file file to be executed by the CHIP-8 interpreter
      */
