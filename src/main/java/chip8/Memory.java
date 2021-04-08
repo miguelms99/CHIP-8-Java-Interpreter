@@ -23,9 +23,6 @@ public class Memory {
      */
     public final short fontLocation = 0x50;
 
-    //Memory and register bank
-    private final byte[] memory;
-
     /**
      * 16 general purpose 8-bit registers (V0 to VF)
      */
@@ -35,6 +32,8 @@ public class Memory {
      * 16-bit address register I
      */
     public short I;
+
+    private final byte[] memory;
 
     /**
      * Creates a Memory with fonts sprites but no program loaded onto it

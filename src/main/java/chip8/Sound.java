@@ -67,8 +67,7 @@ class Sound implements Runnable {
             try {
                 synchronized (timers) {
                     while (timers.getSoundTimerStopTime() < System.nanoTime()) {
-                        //Wait while silent
-                        //Will get notified if the sound timer is modified
+                        //Wait while silent. Will get notified if the sound timer is modified
                         timers.wait();
                     }
                 }
@@ -76,18 +75,15 @@ class Sound implements Runnable {
                 break;
             }
             synchronized (this) {
-                sdl.start(); //Starts playing sound
+                sdl.start();
                 isPlaying = true;
                 this.notify(); //The other thread will fill up the buffer
             }
             try {
                 synchronized (timers) {
-                    //Calculate the duration of the sound
                     long duration = (timers.getSoundTimerStopTime() - System.nanoTime()) / 1_000_000;
                     while (duration > 0) {
-                        //Wait for the duration of the sound
-                        //Will get notified if the sound timer changes
-                        timers.wait(duration);
+                        timers.wait(duration); //Will get notified if the sound timer changes
                         //Calculate the duration again in case the sound timer changed
                         duration = (timers.getSoundTimerStopTime() - System.nanoTime()) / 1_000_000;
                     }
@@ -96,7 +92,7 @@ class Sound implements Runnable {
                 break;
             }
             synchronized (this) {
-                sdl.stop(); //Stops the sound
+                sdl.stop();
                 isPlaying = false;
             }
         }

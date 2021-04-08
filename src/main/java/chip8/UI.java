@@ -10,8 +10,7 @@ import java.awt.event.ActionListener;
  */
 public class UI {
 
-    //Refresh rate of the screen in hz
-    private final int refreshRate = 60;
+    private final int refreshRate = 60; //in hz
     private final ScreenPanel display;
     private final JFrame frame;
     /*
@@ -20,12 +19,11 @@ public class UI {
     4 5 6 d
     7 8 9 e
     a 0 b f
-    On a qwerty keyboard the following keys are used:
+    On a qwerty keyboard the following will be are used:
     1 2 3 4
     q w e r
     a s d f
     z x c v
-    keyCodes contains the key codes for those keys sorted by the hexadecimal identifier
      */
     private final int[] keyCodes = {88, 49, 50, 51,
             81, 87, 69, 65,
@@ -57,13 +55,9 @@ public class UI {
     //This method will set all the keybindings
     private void setKeyBindings() {
         for (int i = 0; i<keyCodes.length; i++) {
-            //Sets the input map for the key press
             display.getInputMap(inputFocus).put(KeyStroke.getKeyStroke(keyCodes[i], 0, false), Integer.toHexString(i) + "down");
-            //Sets the input map for the rey release
             display.getInputMap(inputFocus).put(KeyStroke.getKeyStroke(keyCodes[i], 0, true), Integer.toHexString(i) + "up");
-            //Sets the action map for the key press using setKeyPress()
             display.getActionMap().put(Integer.toHexString(i) + "down", new setKeyPress(i, true));
-            //Sets the action map for the rey release using setKeyPress()
             display.getActionMap().put(Integer.toHexString(i) + "up", new setKeyPress(i, false));
         }
     }
@@ -77,7 +71,7 @@ public class UI {
 
     private class setKeyPress extends AbstractAction {
         boolean keyStatus; //true if the key is being pressed, false if the key is being released
-        int key; //hexadecimal identifier of the key
+        int key; //hex identifier
 
         setKeyPress(int key, boolean keyStatus) {
             this.key = key;

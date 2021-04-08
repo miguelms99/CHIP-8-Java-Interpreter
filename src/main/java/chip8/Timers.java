@@ -14,13 +14,10 @@ public class Timers {
     Only the time at which the timer will reach 0 is needed.
      */
 
-    //Time when the delay timer will reach 0
+    //Time when the timers will reach 0
     private volatile long delayTimerStopTime;
-
-    //Time when the sound timer will reach 0
     private volatile long soundTimerStopTime;
 
-    //Sound thread
     public Thread soundThread;
 
 
@@ -45,7 +42,6 @@ public class Timers {
      * @param delayTimer Value of the delay timer
      */
     public void setDelayTimer(byte delayTimer) {
-        //Calculate the time it reaches 0
         delayTimerStopTime = System.nanoTime() + ((delayTimer&0xFF)*1_000_000_000L/60);
     }
 
@@ -54,10 +50,8 @@ public class Timers {
      * @param soundTimer Value of the sound timer
      */
     public synchronized void setSoundTimer(byte soundTimer) {
-        //Calculate the time the sound should stop
         soundTimerStopTime = System.nanoTime() + ((soundTimer&0xFF)*1_000_000_000L/60);
-        //Notify the thread waiting to play a sound
-        this.notify();
+        this.notify();  //Notify the thread waiting to play a sound
     }
 
     /**

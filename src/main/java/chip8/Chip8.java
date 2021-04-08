@@ -16,13 +16,11 @@ public class Chip8 {
     private final Memory memory;
     private final ProcessingUnit processingUnit;
 
-    //Default options if not specified in the constructor
     private final static int defaultFrequency = 600;
     private final static boolean defaultAlternative8XY68XYE = true;
     private final static boolean defaultAlternativeFX55FX65 = true;
 
-    //Used to end the main loop
-    private volatile boolean endLoop = false;
+    private volatile boolean endLoop = false; //Used to end the main loop
 
     /**
      * Executes a CHIP-8 program.

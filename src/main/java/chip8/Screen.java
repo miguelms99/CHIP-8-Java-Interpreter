@@ -32,8 +32,7 @@ public class Screen {
      */
     public final boolean outOfBoundsCoordinates;
 
-    //false is black and true is white
-    //An empty screen is black, sprites are drawn in white
+    //false is black and true is white. An empty screen is black, sprites are drawn in white
     private final boolean[][] screenArray = new boolean[SCREEN_WIDTH][SCREEN_HEIGHT];
 
     //true if the screen has been modified since last time it was shown
@@ -147,11 +146,8 @@ public class Screen {
                 for (byte i = 7; i>=0; i--) {
                     //Avoid wrapping if wrap is set to false
                     if (!(x+i>= SCREEN_WIDTH && !screenWrap)) {
-                        //Calculate the pixel
                         boolean pixel = (line & mask) == mask;
-                        //Check if an on pixel will be overwritten to off
                         if (pixel && screenArray[(x + i) % SCREEN_WIDTH][y % SCREEN_HEIGHT]) pixelOverwrite=true;
-                        //XOR the pixel
                         screenArray[(x+i)%SCREEN_WIDTH][y%SCREEN_HEIGHT] ^= pixel;
                     }
                     mask <<= 1;

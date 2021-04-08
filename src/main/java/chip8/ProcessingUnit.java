@@ -12,26 +12,13 @@ public class ProcessingUnit {
     private final Timers timers;
     private final Screen screen;
     private final Keyboard keyboard;
-
-    //How many instructions have been executed
-    private long cycleCounter = 0;
-
-    //How many instructions per second should be executed, 0 for unlimited
-    private int frequency;
-
-    //Time at which the CHIP-8 emulation started
+    private long cycleCount = 0;
+    private int frequency; //In instruction per second. 0 for unlimited
     private final long startTime;
-
-    //Stack
     private final ArrayDeque<Short> stack = new ArrayDeque<>();
-
-    //Program counter
     private short PC;
 
-    //Most of the modern CHIP-8 interpreters have instructions with slightly different implementations to those used by
-    //older interpreters such as the one in the RCA COSMAC VIP computer. A lot of newer CHIP-8 programs won't work with
-    //the older implementations so a flag is needed to be able to chose between the implementations. By default the
-    //newer implementation will be used as it seems to be the more common one among popular CHIP-8 programs.
+    //See javadoc below
     private final boolean alternative8XY68XYE;
     private final boolean alternativeFX55FX65;
 
@@ -78,8 +65,8 @@ public class ProcessingUnit {
      * Getter for the total count of cycles
      * @return total cycles executed since the emulation started
      */
-    public long getCycleCounter() {
-        return cycleCounter;
+    public long getCycleCount() {
+        return cycleCount;
     }
 
     /**
@@ -90,7 +77,6 @@ public class ProcessingUnit {
         return PC;
     }
 
-    //Convert a short to an array of four nibbles
     private byte[] shortToNibble(short s) {
         byte[] nibble = new byte[4];
         for (int i = 0; i < nibble.length; i++) {
@@ -107,11 +93,7 @@ public class ProcessingUnit {
      * @param forceSync if true the processing unit will sync no mather what the next instruction is
      */
     public void syncTime(boolean forceSync) {
-        /*It is needed to slow down the processing unit to match the frequency set in the frequency attribute
-        This method will wait in order to match the required frequency
-        This method will only get called before executing an instruction which requieres to be accurate in time.
-        For example, the method will get called before drawing on the screen, modifying a timer or waiting for user input
-        but it will not be called before performing an arithmetic operation on the memory.
+        /*
         The reason for avoiding to sync the processing unit until needed
         is that sleep() is unusable at less than 1 millisecond accuracy.
          */
@@ -128,7 +110,7 @@ public class ProcessingUnit {
                 || (nextOpcodeNibble[0] == 0xF && nextOpcodeNibble[2] == 0x1 && nextOpcodeNibble[3] == 0x8)) {
             if (frequency!=0) {
                 long runningTime = System.nanoTime()-startTime;
-                long expectedRunningTime = (long) ((double) cycleCounter/frequency*1_000_000_000L);
+                long expectedRunningTime = (long) ((double) cycleCount /frequency*1_000_000_000L);
                 long delayMs = (expectedRunningTime - runningTime)/1_000_000;
                 if (delayMs>=1) {
                     try {
@@ -269,18 +251,16 @@ public class ProcessingUnit {
                 }
             default:
                 System.err.println("Opcode not valid: " + Integer.toHexString(opcodeInt)
-                        + "\nAt memory location: " + Integer.toHexString(PC) + "\nCycle: " + cycleCounter);
+                        + "\nAt memory location: " + Integer.toHexString(PC) + "\nCycle: " + cycleCount);
                 System.exit(1);
         }
-        cycleCounter++;
+        cycleCount++;
     }
 
     //The following 35 methods contain the code that will decode and execute the 35 CHIP-8 instructions
 
-    //Execute machine language subroutine at address NNN
+    //Execute machine language subroutine at address NNN. It is now considered deprecated and won't do anything.
     private void opcode0NNN() {
-        //This instruction originally was intended to execute machine code on the RCA COSMAC VIP computer but is now
-        //considered deprecated. The program counter will get incremented but no actual machine code will be executed.
         PC += 2;
     }
 
@@ -501,7 +481,7 @@ public class ProcessingUnit {
     private void opcodeFX0A(short opcode) {
         byte key = 0;
         try {
-            key = keyboard.waitKey(-1);
+            key = keyboard.waitKey(-1, true);
         } catch (InterruptedException e) { }
         if (!(key>=0 && key<keyboard.numKeys)) {
             //Defaults to key 0 if there is an error getting the key

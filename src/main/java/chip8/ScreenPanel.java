@@ -12,9 +12,7 @@ public class ScreenPanel extends JPanel {
     //How many pixels a CHIP-8 screen pixel has
     private final int scale = 10;
 
-    //Screen
     private final Screen screen;
-    //Screen array
     private boolean[][] screenArray;
 
     /**
@@ -28,14 +26,12 @@ public class ScreenPanel extends JPanel {
 
     @Override
     public Dimension getPreferredSize() {
-        //Sets the size of the panel
         return new Dimension(Screen.SCREEN_WIDTH * scale, Screen.SCREEN_HEIGHT * scale);
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        //Draw the screen
         g.setColor(Color.WHITE);
         for (int i = 0; i< screenArray.length; i++) {
             for (int j = 0; j< screenArray[i].length; j++) {
