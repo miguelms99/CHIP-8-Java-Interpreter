@@ -75,6 +75,7 @@ public class Chip8 {
             nextOpcode = processingUnit.nextOpcode();
             processingUnit.syncTime();
             processingUnit.executeOpcode(nextOpcode);
+            SwingUtilities.invokeLater(() -> ui.refreshScreen());
         }
     }
 

@@ -11,7 +11,8 @@ public class ScreenPanel extends JPanel {
 
     //How many pixels a CHIP-8 screen pixel has
     private final int scale = 10;
-
+    private final int refreshRate = 60; //in hz
+    private long lastRefresh;
     private final Screen screen;
     private boolean[][] screenArray;
 
@@ -21,7 +22,8 @@ public class ScreenPanel extends JPanel {
      */
     public ScreenPanel(Screen screen) {
         this.screen = screen;
-        paintScreen();
+        screenArray = screen.getScreenArray();
+        lastRefresh = System.nanoTime();
     }
 
     @Override
@@ -46,13 +48,14 @@ public class ScreenPanel extends JPanel {
     }
 
     /**
-     * This method will be used to refresh the screen
+     * Paint the screen
      */
     public void paintScreen() {
-        if (screen.getDrawFlag()) {
+        if (screen.getDrawFlag() && (System.nanoTime()-lastRefresh)>(1_000_000_000L/refreshRate)) {
             screenArray = screen.getScreenArray(true);
             repaint();
             Toolkit.getDefaultToolkit().sync(); //This is needed so that the panel doesn't lag
+            lastRefresh = System.nanoTime();
         }
     }
 

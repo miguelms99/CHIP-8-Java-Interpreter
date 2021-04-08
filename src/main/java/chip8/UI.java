@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
  */
 public class UI {
 
-    private final int refreshRate = 60; //in hz
     private final ScreenPanel display;
     private final JFrame frame;
     /*
@@ -49,7 +48,6 @@ public class UI {
         frame.pack();
         frame.setVisible(true);
         setKeyBindings();
-        refreshScreen();
     }
 
     //This method will set all the keybindings
@@ -60,13 +58,6 @@ public class UI {
             display.getActionMap().put(Integer.toHexString(i) + "down", new setKeyPress(i, true));
             display.getActionMap().put(Integer.toHexString(i) + "up", new setKeyPress(i, false));
         }
-    }
-
-    //This method sets up a timer which will refresh the screen
-    private void refreshScreen() {
-        int delay = 1000/refreshRate;
-        ActionListener task = actionEvent -> display.paintScreen();
-        new Timer(delay, task).start();
     }
 
     private class setKeyPress extends AbstractAction {
@@ -82,6 +73,13 @@ public class UI {
         public void actionPerformed(ActionEvent e) {
             keyboard.setKey(key, keyStatus);
         }
+    }
+
+    /**
+     * Refresh the screen
+     */
+    public void refreshScreen() {
+        display.paintScreen();
     }
 
 }
